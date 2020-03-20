@@ -1,27 +1,24 @@
 package com.academy.terai.document;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class User {
     @Id
-    private Integer id;
+    private ObjectId id =new ObjectId();
     private String name;
     private String surname;
 
-    public User(Integer id, String name, String surname) {
-        this.id = id;
+    public User(String name, String surname) {
+
         this.name = name;
         this.surname = surname;
     }
 
-    public Integer getId() {
+    public ObjectId getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
