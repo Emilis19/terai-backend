@@ -1,4 +1,4 @@
-package com.academy.terai.document;
+package com.academy.terai.Model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;

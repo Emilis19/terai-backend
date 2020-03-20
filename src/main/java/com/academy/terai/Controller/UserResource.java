@@ -1,7 +1,7 @@
-package com.academy.terai.resource;
+package com.academy.terai.Controller;
 
-import com.academy.terai.document.User;
-import com.academy.terai.repository.UserRepository;
+import com.academy.terai.Model.User;
+import com.academy.terai.Repository.UserRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
