@@ -37,7 +37,7 @@ public class AccountResource {
         return new ResponseEntity("Student added successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{email")
+    @DeleteMapping(value = "/{email}")
     public void deleteStudent(@PathVariable String email) {
         accountService.deleteAccount(accountService.findByEmail(email).getId());
     }
