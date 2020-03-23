@@ -1,23 +1,21 @@
 package com.academy.terai.Model;
 
-import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "role")
 public class Role {
-    Account account = new Account();
-    private ObjectId id = account.getId();
-    String role;
+    @Id
+    private String id;
+    private String role;
 
-    public Role(String role) {
+    public void Role(String role, String id) {
         this.role = role;
+        this.id = id;
     }
 
     public String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

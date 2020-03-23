@@ -3,18 +3,16 @@ package com.academy.terai.Model;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 @Document(collection = "account")
 public class Account {
     @Id
-    private ObjectId id = new ObjectId();
+    private String id;
     @NotBlank(message = "Vardas negali būti tuščias")
     @Size(max = 32, message = "Vardas negali būti ilgesnis nei 32 simboliai")
     private String name;
@@ -23,29 +21,19 @@ public class Account {
     private String lastName;
     @NotEmpty
     @Indexed(unique = true)
-    private String emailAddress;
+    private String email;
     private Integer reviewedApplications;
     private String lastLoggedIn;
     private String password;
-   //@DBRef    Reik pakeist role is string i class
+    //@DBRef
     private String role;
 
-    public Account(String name, String lastName, String emailAddress, Integer reviewedApplications, String lastLoggedIn, String role, String password) {
-        this.name = name;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.reviewedApplications = reviewedApplications;
-        this.lastLoggedIn = lastLoggedIn;
-        this.role = role;
-        this.password = password;
-    }
-
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public Account() {
-
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -64,12 +52,12 @@ public class Account {
         this.lastName = lastName;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getReviewedApplications() {
@@ -92,7 +80,7 @@ public class Account {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(String role){
         this.role = role;
     }
 
