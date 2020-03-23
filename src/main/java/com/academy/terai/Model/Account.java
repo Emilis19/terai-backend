@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+
 @Document(collection = "account")
 public class Account {
     @Id
@@ -27,6 +28,7 @@ public class Account {
     private String password;
     //@DBRef
     private String role;
+
 
     public String getId() {
         return id;

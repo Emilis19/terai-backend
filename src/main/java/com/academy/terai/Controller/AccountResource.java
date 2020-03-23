@@ -16,7 +16,7 @@ public class AccountResource {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/all")
     public List<Account> getAllAccounts() {
         return accountService.findAll();
     }
@@ -32,9 +32,9 @@ public class AccountResource {
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> saveOrUpdateStudent(@RequestBody Account account) {
+    public ResponseEntity<?> saveOrUpdateAccount(@RequestBody Account account) {
         accountService.saveOrUpdateAccount(account);
-        return new ResponseEntity("Student added successfully", HttpStatus.OK);
+        return new ResponseEntity("Account added successfully", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{email}")
