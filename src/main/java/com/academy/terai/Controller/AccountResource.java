@@ -13,9 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/accounts")
 public class AccountResource {
+    private final AccountService accountService;
     @Autowired
-    private AccountService accountService;
-
+    public AccountResource(AccountService accountService){
+        this.accountService = accountService;
+    }
     @GetMapping(value = "/all")
     public List<Account> getAllAccounts() {
         return accountService.findAll();
