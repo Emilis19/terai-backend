@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -22,12 +23,13 @@ public class Account {
     private String lastName;
     @NotEmpty
     @Indexed(unique = true)
+    @NotNull
     private String email;
     private Integer reviewedApplications;
     private String lastLoggedIn;
     private String password;
     //@DBRef
-    private String role;
+    private Role role;
 
 
     public String getId() {
@@ -78,11 +80,11 @@ public class Account {
         this.lastLoggedIn = lastLoggedIn;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role){
+    public void setRole(Role role){
         this.role = role;
     }
 
