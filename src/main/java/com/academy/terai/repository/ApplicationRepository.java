@@ -1,9 +1,7 @@
-package com.academy.terai.Repository;
+package com.academy.terai.repository;
 
-import com.academy.terai.Model.Application;
+import com.academy.terai.model.Application;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.Optional;
 
 
 public interface ApplicationRepository extends MongoRepository<Application, String> {

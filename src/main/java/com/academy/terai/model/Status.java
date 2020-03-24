@@ -1,4 +1,4 @@
-package com.academy.terai.Model;
+package com.academy.terai.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

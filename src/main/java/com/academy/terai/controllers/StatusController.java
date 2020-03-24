@@ -1,12 +1,19 @@
-package com.academy.terai.Controller;
+package com.academy.terai.controllers;
 
-import com.academy.terai.Model.Status;
-import com.academy.terai.Service.StatusService;
+import com.academy.terai.model.Status;
+import com.academy.terai.service.StatusService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,26 +36,22 @@ public class StatusController {
         return new ResponseEntity<>(statuses, HttpStatus.OK);
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Status> getStatusById(@PathVariable String id) throws NotFoundException {
-//        return new ResponseEntity<>(statusnService.findById(id), HttpStatus.OK);
-//    }
 
     @GetMapping("/{id}")
-    public Optional<Status> getStatusById(@PathVariable String id) throws NotFoundException {
+    public Status getStatusById(@PathVariable String id) throws NotFoundException {
         return statusnService.findById(id);
     }
 
     @PostMapping
-    ResponseEntity<Status> createStatus(@RequestBody Status status) throws NotFoundException {
+    ResponseEntity<HttpStatus> createStatus(@RequestBody Status status) throws NotFoundException {
         statusnService.addStatus(status);
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Status> updateStatus(@RequestBody Status status, @PathVariable String id) throws NotFoundException {
+    ResponseEntity<HttpStatus> updateStatus(@RequestBody Status status, @PathVariable String id) throws NotFoundException {
         statusnService.updateStatus(status, id);
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

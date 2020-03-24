@@ -1,10 +1,9 @@
-package com.academy.terai.Model;
+package com.academy.terai.model;
 
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Email;
@@ -54,7 +53,9 @@ public class Application {
     private String degree;
     private String mobileNumber;
     private String linkedinUrl;
+
     private Binary image;
+
     private String hobbies;
     private String referenceToIt;
     private Date dateCreated;

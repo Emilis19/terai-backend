@@ -1,11 +1,12 @@
-package com.academy.terai.Service;
+package com.academy.terai.service;
 
-import com.academy.terai.Model.Status;
-import com.academy.terai.Repository.StatusRepository;
+import com.academy.terai.model.Status;
+import com.academy.terai.repository.StatusRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -21,11 +22,15 @@ public class StatusService {
         return statusRepository.findAll();
     }
 
-    public Optional<Status> findById(final String id) {
-        return statusRepository.findById(id);
+    public Status findById(final String id) throws NotFoundException {
+        return statusRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Status findByName(final String name) {
+
+    public Status findByName(final String name) throws NotFoundException {
+        if (statusRepository.findByName(name) == null){
+            throw new NotFoundException(name);
+        }
         return statusRepository.findByName(name);
     }
     public void updateStatus(final Status status, final String id) throws NotFoundException {
@@ -42,9 +47,9 @@ public class StatusService {
         }
         statusRepository.deleteById(id);
     }
-    public Status addStatus(final Status status)  throws NotFoundException {
+    public Status addStatus(final Status status)  throws KeyAlreadyExistsException {
         if (statusRepository.findByName(status.getName()) != null){
-            throw new NotFoundException(status.getName());
+            throw new KeyAlreadyExistsException(status.getName());
         }
         return statusRepository.save(status);
     }
