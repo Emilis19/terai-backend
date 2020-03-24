@@ -1,6 +1,6 @@
-package com.academy.terai.Repository;
+package com.academy.terai.repository;
 
-import com.academy.terai.Model.User;
+import com.academy.terai.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
