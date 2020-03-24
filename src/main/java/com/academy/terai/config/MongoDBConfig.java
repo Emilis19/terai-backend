@@ -13,8 +13,8 @@ public class MongoDBConfig {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
         return strings -> {
-            userRepository.save(new User("Peter", "Peterson"));
-            userRepository.save(new User("Sam", "Samson"));
+//            userRepository.save(new User("Peter", "Peterson"));
+//            userRepository.save(new User("Sam", "Samson"));
         };
     }
 }
