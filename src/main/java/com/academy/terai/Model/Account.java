@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 
 @Document(collection = "account")
@@ -26,7 +27,7 @@ public class Account {
     @NotNull
     private String email;
     private Integer reviewedApplications;
-    private String lastLoggedIn;
+    private Date lastLoggedIn;
     private String password;
     //@DBRef
     private Role role;
@@ -72,11 +73,11 @@ public class Account {
         this.reviewedApplications = reviewedApplications;
     }
 
-    public String getLastLoggedIn() {
+    public Date getLastLoggedIn() {
         return lastLoggedIn;
     }
 
-    public void setLastLoggedIn(String lastLoggedIn) {
+    public void setLastLoggedIn(Date lastLoggedIn) {
         this.lastLoggedIn = lastLoggedIn;
     }
 
