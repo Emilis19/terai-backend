@@ -3,11 +3,13 @@ package com.academy.terai.Controller;
 import com.academy.terai.Model.Account;
 import com.academy.terai.Repository.AccountRepository;
 import com.academy.terai.service.AccountService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.List;
 
 @RestController
@@ -24,7 +26,7 @@ public class AccountResource {
     }
 
     @GetMapping(value = "/{email}")
-    public Account getAccountByEmail(@PathVariable("email") String email) {
+    public Account getAccountByEmail(@PathVariable("email") String email) throws NotFoundException {
         return accountService.findByEmail(email);
     }
 
@@ -33,14 +35,20 @@ public class AccountResource {
         return accountService.findAllByOrderByReviewedApplicationsDesc();
     }
 
-    @PostMapping(value = "/")
-    public ResponseEntity<?> saveOrUpdateAccount(@RequestBody Account account) {
-        accountService.saveOrUpdateAccount(account);
+    @PostMapping
+    ResponseEntity<HttpStatus> createAccount(@RequestBody Account account) throws KeyAlreadyExistsException, NotFoundException {
+        accountService.addAccount(account);
         return new ResponseEntity("Account added successfully", HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    ResponseEntity<HttpStatus> updateAccount(@RequestBody Account account, @PathVariable String id) throws NotFoundException {
+        accountService.updateAccount(account, id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "/{email}")
-    public void deleteStudent(@PathVariable String email) {
+    public void deleteStudent(@PathVariable String email)  throws NotFoundException {
         accountService.deleteAccount(accountService.findByEmail(email).getId());
     }
 }
