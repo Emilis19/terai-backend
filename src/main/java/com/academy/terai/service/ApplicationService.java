@@ -9,17 +9,21 @@ import org.springframework.stereotype.Service;
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 @Service
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
-
+    private final JavaMailSender javaMailSender;
     private final StatusService statusService;
 
     @Autowired
-    public ApplicationService(ApplicationRepository applicationRepository, StatusService statusService) {
+    public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender, StatusService statusService) {
         this.applicationRepository = applicationRepository;
+        this.javaMailSender = javaMailSender;
         this.statusService = statusService;
     }
 
@@ -56,8 +60,23 @@ public class ApplicationService {
             throw new KeyAlreadyExistsException(application.getEmail());
         }
         application.setDateCreated(new Date());
+        application.setPassword(UUID.randomUUID());
         //TODO: change the naming convention to ENUM like
         application.setStatus(statusService.findByName("IT akademija gavo formą"));
-        return applicationRepository.save(application);
+
+        Application returnApplication = applicationRepository.save(application);
+
+        if (returnApplication != null){
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setTo(returnApplication.getEmail());
+
+            msg.setSubject("Akademija");
+            msg.setText("Sveiki " + returnApplication.getFirstName() + "\n Forma galite perziureti: localhost:4200/" + returnApplication.getId()
+                    + "\n Jusu slaptazodis: " + returnApplication.getPassword());
+
+            javaMailSender.send(msg);
+        }
+
+        return returnApplication;
     }
 }

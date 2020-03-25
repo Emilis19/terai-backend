@@ -2,6 +2,7 @@ package com.academy.terai.model;
 
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.UUID;
+
 @Entity
 @Document(collection = "application")
 public class Application {
@@ -59,6 +62,10 @@ public class Application {
     private String hobbies;
     private String referenceToIt;
     private Date dateCreated;
+
+    private UUID password;
+
+
     private Status status;
 
 
@@ -206,5 +213,13 @@ public class Application {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public UUID getPassword() {
+        return password;
+    }
+
+    public void setPassword(UUID password) {
+        this.password = password;
     }
 }
