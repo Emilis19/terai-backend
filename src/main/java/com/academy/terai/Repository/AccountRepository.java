@@ -8,10 +8,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface AccountRepository extends MongoRepository<Account, String> {
-    Account findByEmail(String email);
+
+    Optional<Account> findByEmail(String email);
 
     List<Account> findAllByOrderByReviewedApplicationsDesc();
 }

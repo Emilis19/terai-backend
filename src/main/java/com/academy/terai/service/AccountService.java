@@ -4,6 +4,7 @@ import com.academy.terai.Model.Account;
 import com.academy.terai.Repository.AccountRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -24,8 +25,9 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Account findByEmail(String email) throws NotFoundException {
-        return accountRepository.findByEmail(email);
+    public Account findByEmail(String email) throws UsernameNotFoundException {
+        return  this.accountRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Email: " + email + " not found"));
     }
 
     public List<Account> findAllByOrderByReviewedApplicationsDesc() {

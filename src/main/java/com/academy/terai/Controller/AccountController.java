@@ -14,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
-public class AccountResource {
+public class AccountController {
     private final AccountService accountService;
     @Autowired
-    public AccountResource(AccountService accountService){
+    public AccountController(AccountService accountService){
         this.accountService = accountService;
     }
     @GetMapping(value = "/all")
@@ -30,7 +30,7 @@ public class AccountResource {
         return accountService.findByEmail(email);
     }
 
-    @GetMapping(value = "/orderByReviewedApplications")
+    @GetMapping(value = "/order/reviewed")
     public List<Account> findAllByOrderByReviewedApplicationsDesc() {
         return accountService.findAllByOrderByReviewedApplicationsDesc();
     }
@@ -38,7 +38,7 @@ public class AccountResource {
     @PostMapping
     ResponseEntity<HttpStatus> createAccount(@RequestBody Account account) throws KeyAlreadyExistsException, NotFoundException {
         accountService.addAccount(account);
-        return new ResponseEntity("Account added successfully", HttpStatus.OK);
+        return new ResponseEntity( HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
