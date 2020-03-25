@@ -1,5 +1,6 @@
 package com.academy.terai.service;
 
+import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Status;
 import com.academy.terai.repository.StatusRepository;
 import javassist.NotFoundException;
@@ -22,34 +23,34 @@ public class StatusService {
         return statusRepository.findAll();
     }
 
-    public Status findById(final String id) throws NotFoundException {
-        return statusRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    public Status findById(final String id) throws ApiRequestException {
+        return statusRepository.findById(id).orElseThrow(() -> new ApiRequestException("Statusas neegzsituoja su id: " + id));
     }
 
 
-    public Status findByName(final String name) throws NotFoundException {
+    public Status findByName(final String name) throws ApiRequestException {
         if (statusRepository.findByName(name) == null){
-            throw new NotFoundException(name);
+            throw new ApiRequestException("Statusas neegzistuoja su pavadinimu: " + name);
         }
         return statusRepository.findByName(name);
     }
-    public void updateStatus(final Status status, final String id) throws NotFoundException {
+    public void updateStatus(final Status status, final String id) throws ApiRequestException {
         if (!statusRepository.findById(id).isPresent()){
-            throw new NotFoundException(id);
+            throw new ApiRequestException("Statusas neegzistuoja su id: " + id);
         }
 
         statusRepository.save(status);
     }
 
-    public void deleteStatus(final String id) throws NotFoundException {
+    public void deleteStatus(final String id) throws ApiRequestException {
         if (!statusRepository.findById(id).isPresent()){
-            throw new NotFoundException(id);
+            throw new ApiRequestException("Statusas neegzistuoja su id: " + id);
         }
         statusRepository.deleteById(id);
     }
-    public Status addStatus(final Status status)  throws KeyAlreadyExistsException {
+    public Status addStatus(final Status status)  throws ApiRequestException {
         if (statusRepository.findByName(status.getName()) != null){
-            throw new KeyAlreadyExistsException(status.getName());
+            throw new ApiRequestException("Statusas jau egzistuoja: " + status.getName());
         }
         return statusRepository.save(status);
     }

@@ -1,5 +1,8 @@
 package com.academy.terai.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -11,7 +14,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-@Entity
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "application")
 public class Application {
     @Id
@@ -61,150 +67,4 @@ public class Application {
     private Date dateCreated;
     private Status status;
 
-
-    @javax.persistence.Id
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isAcademyTime() {
-        return academyTime;
-    }
-
-    public void setAcademyTime(boolean academyTime) {
-        this.academyTime = academyTime;
-    }
-
-    public boolean isContractAgreement() {
-        return contractAgreement;
-    }
-
-    public void setContractAgreement(boolean contractAgreement) {
-        this.contractAgreement = contractAgreement;
-    }
-
-    public String getContractReason() {
-        return contractReason;
-    }
-
-    public void setContractReason(String contractReason) {
-        this.contractReason = contractReason;
-    }
-
-    public String getLikedTechnologies() {
-        return likedTechnologies;
-    }
-
-    public void setLikedTechnologies(String likedTechnologies) {
-        this.likedTechnologies = likedTechnologies;
-    }
-
-    public String getReasonForApplying() {
-        return reasonForApplying;
-    }
-
-    public void setReasonForApplying(String reasonForApplying) {
-        this.reasonForApplying = reasonForApplying;
-    }
-
-    public String getSchool() {
-        return school;
-    }
-
-    public void setSchool(String school) {
-        this.school = school;
-    }
-
-    public String getDegree() {
-        return degree;
-    }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public String getLinkedinUrl() {
-        return linkedinUrl;
-    }
-
-    public void setLinkedinUrl(String linkedinUrl) {
-        this.linkedinUrl = linkedinUrl;
-    }
-
-    public Binary getImage() {
-        return image;
-    }
-
-    public void setImage(Binary image) {
-        this.image = image;
-    }
-
-    public String getHobbies() {
-        return hobbies;
-    }
-
-    public void setHobbies(String hobbies) {
-        this.hobbies = hobbies;
-    }
-
-    public String getReferenceToIt() {
-        return referenceToIt;
-    }
-
-    public void setReferenceToIt(String referenceToIt) {
-        this.referenceToIt = referenceToIt;
-    }
-
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 }
