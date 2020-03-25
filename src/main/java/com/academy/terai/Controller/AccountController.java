@@ -16,10 +16,12 @@ import java.util.List;
 @RequestMapping("/accounts")
 public class AccountController {
     private final AccountService accountService;
+
     @Autowired
-    public AccountController(AccountService accountService){
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
+
     @GetMapping(value = "/all")
     public List<Account> getAllAccounts() {
         return accountService.findAll();
@@ -38,7 +40,7 @@ public class AccountController {
     @PostMapping
     ResponseEntity<HttpStatus> createAccount(@RequestBody Account account) throws KeyAlreadyExistsException, NotFoundException {
         accountService.addAccount(account);
-        return new ResponseEntity( HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -48,7 +50,7 @@ public class AccountController {
     }
 
     @DeleteMapping(value = "/{email}")
-    public void deleteStudent(@PathVariable String email)  throws NotFoundException {
+    public void deleteStudent(@PathVariable String email) throws NotFoundException {
         accountService.deleteAccount(accountService.findByEmail(email).getId());
     }
 }

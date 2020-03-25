@@ -5,6 +5,7 @@ import com.academy.terai.Repository.AccountRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -16,6 +17,8 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
@@ -42,12 +45,13 @@ public class AccountService {
         accountRepository.save(account);
     }
     public Account addAccount(final Account account) throws KeyAlreadyExistsException, NotFoundException {
-        if (accountRepository.findByEmail(account.getEmail()) != null){
-            throw new KeyAlreadyExistsException(account.getEmail());
-        }
+//        if (accountRepository.findByEmail(account.getEmail()) != null){
+//            throw new KeyAlreadyExistsException(account.getEmail());
+//        }
         account.setLastLoggedIn(new Date());
         //TODO: change the naming convention to ENUM like
         account.setReviewedApplications(0);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         return accountRepository.save(account);
     }
 
