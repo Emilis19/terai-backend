@@ -53,6 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/application/{id}").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(new JwtSecurityConfigurer(jwtTokenProvider));
+                .apply(new JwtSecurityConfigurer(jwtTokenProvider)).and().cors().and().csrf().disable();
     }
 }

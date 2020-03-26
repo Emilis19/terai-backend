@@ -20,7 +20,7 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/accounts")
 public class AccountController {
     private final AccountService accountService;
