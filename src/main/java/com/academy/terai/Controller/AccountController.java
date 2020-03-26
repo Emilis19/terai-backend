@@ -40,13 +40,13 @@ public class AccountController {
     @PostMapping
     ResponseEntity<HttpStatus> createAccount(@RequestBody Account account) throws KeyAlreadyExistsException, NotFoundException {
         accountService.addAccount(account);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.valueOf(204));
     }
 
     @PutMapping("/{id}")
     ResponseEntity<HttpStatus> updateAccount(@RequestBody Account account, @PathVariable String id) throws NotFoundException {
         accountService.updateAccount(account, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.valueOf(204));
     }
 
     @DeleteMapping(value = "/{email}")
