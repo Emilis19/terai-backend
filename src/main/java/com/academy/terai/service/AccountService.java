@@ -1,7 +1,7 @@
 package com.academy.terai.service;
 
-import com.academy.terai.Model.Account;
-import com.academy.terai.Repository.AccountRepository;
+import com.academy.terai.model.Account;
+import com.academy.terai.repository.AccountRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

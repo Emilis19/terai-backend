@@ -1,6 +1,6 @@
 package com.academy.terai.security;
 
-import com.academy.terai.Repository.AccountRepository;
+import com.academy.terai.repository.AccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

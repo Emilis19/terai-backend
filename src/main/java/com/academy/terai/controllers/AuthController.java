@@ -1,6 +1,6 @@
-package com.academy.terai.Controller;
+package com.academy.terai.controllers;
 
-import com.academy.terai.Repository.AccountRepository;
+import com.academy.terai.repository.AccountRepository;
 import com.academy.terai.security.AuthenticationRequest;
 import com.academy.terai.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;

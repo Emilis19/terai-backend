@@ -1,7 +1,6 @@
-package com.academy.terai.Controller;
+package com.academy.terai.controllers;
 
-import com.academy.terai.Model.Account;
-import com.academy.terai.Repository.AccountRepository;
+import com.academy.terai.model.Account;
 import com.academy.terai.service.AccountService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
