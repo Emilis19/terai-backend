@@ -1,5 +1,6 @@
 package com.academy.terai.controllers;
 
+import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Status;
 import com.academy.terai.service.StatusService;
 import javassist.NotFoundException;
@@ -38,24 +39,24 @@ public class StatusController {
 
 
     @GetMapping("/{id}")
-    public Status getStatusById(@PathVariable String id) throws NotFoundException {
+    public Status getStatusById(@PathVariable String id) throws ApiRequestException {
         return statusnService.findById(id);
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createStatus(@RequestBody Status status) throws NotFoundException {
+    ResponseEntity<HttpStatus> createStatus(@RequestBody Status status) throws ApiRequestException {
         statusnService.addStatus(status);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateStatus(@RequestBody Status status, @PathVariable String id) throws NotFoundException {
+    ResponseEntity<HttpStatus> updateStatus(@RequestBody Status status, @PathVariable String id) throws ApiRequestException {
         statusnService.updateStatus(status, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> deleteStatus(@PathVariable String id) throws NotFoundException {
+    ResponseEntity<HttpStatus> deleteStatus(@PathVariable String id) throws ApiRequestException {
         statusnService.deleteStatus(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
