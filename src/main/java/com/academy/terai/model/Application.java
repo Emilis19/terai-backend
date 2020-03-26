@@ -44,8 +44,6 @@ public class Application {
     @NotNull(message = "Sutikimas negali būti tuščias")
     private boolean contractAgreement;
 
-    @NotBlank(message = "Priežastis negali būti tuščia")
-    @Size(max = 256, message = "Priežastis negali būti ilgesnė nei 256 simboliai")
     private String contractReason;
 
     @NotBlank(message = "Technologijos negali būti tuščia")
