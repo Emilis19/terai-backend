@@ -66,7 +66,7 @@ public class Application {
     private String referenceToIt;
     private Date dateCreated;
 
-    private UUID password;
+    private String password;
 
 
     private Status status;

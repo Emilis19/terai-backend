@@ -6,6 +6,8 @@ import com.academy.terai.model.response.ApplicationHrResponse;
 import com.academy.terai.repository.ApplicationRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -22,6 +24,8 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final JavaMailSender javaMailSender;
     private final StatusService statusService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender, StatusService statusService) {
@@ -46,7 +50,7 @@ public class ApplicationService {
     }
 
     public Application findByEmail(final String email) {
-        return applicationRepository.findByEmail(email);
+        return applicationRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Email: " + email + " not found"));
     }
 
     public void updateApplication(final Application application, final String id) throws ApiRequestException {
@@ -65,11 +69,12 @@ public class ApplicationService {
         applicationRepository.deleteById(id);
     }
     public Application addApplication(final Application application) throws ApiRequestException {
-        if (applicationRepository.findByEmail(application.getEmail()) != null){
+        if (applicationRepository.findByEmail(application.getEmail()).isPresent()){
             throw new ApiRequestException("Toks email jau egzistuoja: " + application.getEmail());
         }
+        String password = UUID.randomUUID().toString();
         application.setDateCreated(new Date());
-        application.setPassword(UUID.randomUUID());
+        application.setPassword(passwordEncoder.encode(password));
         //TODO: change the naming convention to ENUM like
         application.setStatus(statusService.findByName("IT akademija gavo formą"));
 
@@ -81,7 +86,7 @@ public class ApplicationService {
 
             msg.setSubject("Akademija");
             msg.setText("Sveiki " + returnApplication.getFirstName() + "\n Forma galite perziureti: localhost:4200/" + returnApplication.getId()
-                    + "\n Jusu slaptazodis: " + returnApplication.getPassword());
+                    + "\n Jusu slaptazodis: " + password);
 
             javaMailSender.send(msg);
         }

@@ -1,6 +1,7 @@
 package com.academy.terai.controllers;
 
 import com.academy.terai.repository.AccountRepository;
+import com.academy.terai.repository.ApplicationRepository;
 import com.academy.terai.security.AuthenticationRequest;
 import com.academy.terai.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -31,12 +34,22 @@ public class AuthController {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     AccountRepository users;
+    @Autowired
+    ApplicationRepository applicants;
+
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
         try {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username, this.users.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRoles());
+            String token;
+            List<String> roles;
+            if (applicants.findByEmail(username).isPresent()) {
+                roles = new ArrayList<>();
+            } else {
+                roles = this.users.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRoles();
+            }
+            token = jwtTokenProvider.createToken(username, roles);
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
