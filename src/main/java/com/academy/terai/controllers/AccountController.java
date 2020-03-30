@@ -30,7 +30,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public List<Account> getAllAccounts() {
         return accountService.findAll();
     }

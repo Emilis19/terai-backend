@@ -49,8 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/application").permitAll()
                 .antMatchers(HttpMethod.GET, "/application").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/application").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/application/{id}").permitAll()
-                .antMatchers(HttpMethod.PUT, "/application/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/application/{id}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/application/{id}").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfigurer(jwtTokenProvider)).and().cors().and().csrf().disable();
