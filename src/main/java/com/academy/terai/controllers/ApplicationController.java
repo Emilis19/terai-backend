@@ -2,6 +2,9 @@ package com.academy.terai.controllers;
 
 import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Application;
+import com.academy.terai.model.request.ApplicationRequest;
+import com.academy.terai.model.request.ApplicationUpdateRequest;
+import com.academy.terai.model.response.ApplicationFullResponse;
 import com.academy.terai.model.response.ApplicationHrResponse;
 import com.academy.terai.service.ApplicationService;
 import javassist.NotFoundException;
@@ -42,19 +45,19 @@ public class ApplicationController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Application> getApplicationById(@PathVariable String id) throws ApiRequestException {
-        Application returnApplication = applicationService.findById(id);
+    public ResponseEntity<ApplicationFullResponse> getApplicationById(@PathVariable String id) throws ApiRequestException {
+        ApplicationFullResponse returnApplication = applicationService.findById(id);
         return new ResponseEntity<>(returnApplication, HttpStatus.OK);
    }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createApplication(@RequestBody Application application) throws ApiRequestException {
+    ResponseEntity<HttpStatus> createApplication(@RequestBody ApplicationRequest application) throws ApiRequestException {
         applicationService.addApplication(application);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateApplication(@RequestBody Application application, @PathVariable String id) throws ApiRequestException {
+    ResponseEntity<HttpStatus> updateApplication(@RequestBody ApplicationUpdateRequest application, @PathVariable String id) throws ApiRequestException {
         applicationService.updateApplication(application, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
