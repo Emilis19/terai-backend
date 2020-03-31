@@ -1,6 +1,10 @@
 package com.academy.terai.service;
 
 import com.academy.terai.model.Account;
+import com.academy.terai.model.Application;
+import com.academy.terai.model.request.AccountRequest;
+import com.academy.terai.model.response.AccountResponse;
+import com.academy.terai.model.response.ApplicationHrResponse;
 import com.academy.terai.repository.AccountRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,18 +22,24 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Account> findAll() {
-        return accountRepository.findAll();
+    public List<AccountResponse> findAll() {
+        List<Account> accounts = accountRepository.findAll();
+        List<AccountResponse> responseList = new ArrayList<>();
+
+        for (Account acc : accounts) {
+            responseList.add(new AccountResponse(acc));
+        }
+        return responseList;
     }
 
-    public Account findByEmail(String email) throws UsernameNotFoundException {
+    public Account findByEmail(final String email) throws UsernameNotFoundException {
         return  this.accountRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Email: " + email + " not found"));
     }
@@ -44,18 +55,19 @@ public class AccountService {
 
         accountRepository.save(account);
     }
-    public Account addAccount(final Account account) throws KeyAlreadyExistsException, NotFoundException {
+    public Account addAccount(final AccountRequest account) throws KeyAlreadyExistsException, NotFoundException {
 //        if (accountRepository.findByEmail(account.getEmail()) != null){
 //            throw new KeyAlreadyExistsException(account.getEmail());
 //        }
-        account.setLastLoggedIn(new Date());
+        Account acc = new Account(account);
+        acc.setLastLoggedIn(new Date());
         //TODO: change the naming convention to ENUM like
-        account.setReviewedApplications(0);
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
-        return accountRepository.save(account);
+        acc.setReviewedApplications(0);
+        acc.setPassword(passwordEncoder.encode(acc.getPassword()));
+        return accountRepository.save(acc);
     }
 
-    public void deleteAccount(String id) {
+    public void deleteAccount(final String id) {
         accountRepository.deleteById(id);
     }
 }
