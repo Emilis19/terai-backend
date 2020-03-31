@@ -1,6 +1,8 @@
 package com.academy.terai.controllers;
 
 import com.academy.terai.model.Account;
+import com.academy.terai.model.request.AccountRequest;
+import com.academy.terai.model.response.AccountResponse;
 import com.academy.terai.service.AccountService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,8 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping(value = "/all")
-    public List<Account> getAllAccounts() {
+    @GetMapping
+    public List<AccountResponse> getAllAccounts() {
         return accountService.findAll();
     }
 
@@ -46,9 +48,9 @@ public class AccountController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createAccount(@RequestBody Account account) throws KeyAlreadyExistsException, NotFoundException {
+    ResponseEntity<HttpStatus> createAccount(@RequestBody AccountRequest account) throws KeyAlreadyExistsException, NotFoundException {
         accountService.addAccount(account);
-        return new ResponseEntity(HttpStatus.valueOf(204));
+        return new ResponseEntity<>(HttpStatus.valueOf(204));
     }
 
     @PutMapping("/{id}")

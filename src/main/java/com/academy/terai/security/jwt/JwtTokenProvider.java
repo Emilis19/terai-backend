@@ -1,11 +1,12 @@
 package com.academy.terai.security.jwt;
 
+import com.academy.terai.model.CustomUserDetails;
+import com.academy.terai.security.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,13 +17,13 @@ import java.util.List;
 
 @Component
 public class JwtTokenProvider {
-	
+
 	@Autowired
     JwtProperties jwtProperties;
 
     @Autowired
-    private UserDetailsService userDetailsService;
-    
+    private CustomUserDetailsService userDetailsService;
+
     private String secretKey;
 
     @PostConstruct

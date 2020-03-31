@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/application")
+@RequestMapping("/applications")
 public class ApplicationController {
 
     private final ApplicationService applicationService;

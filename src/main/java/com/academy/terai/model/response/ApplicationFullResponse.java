@@ -31,10 +31,9 @@ public class ApplicationFullResponse {
     private String hobbies;
     private String referenceToIt;
     private Date dateCreated;
-    private UUID password;
     private String status;
 
-    public ApplicationFullResponse (Application application){
+    public ApplicationFullResponse(Application application) {
         this.id = application.getId();
         this.firstName = application.getFirstName();
         this.lastName = application.getLastName();
@@ -52,7 +51,6 @@ public class ApplicationFullResponse {
         this.hobbies = application.getHobbies();
         this.referenceToIt = application.getReferenceToIt();
         this.dateCreated = application.getDateCreated();
-        this.password = application.getPassword();
         this.status = application.getStatus();
     }
 }

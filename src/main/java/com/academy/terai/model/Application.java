@@ -46,8 +46,9 @@ public class Application {
     private String hobbies;
     private String referenceToIt;
     private Date dateCreated;
-    private UUID password;
     private String status;
+
+    private String password;
 
     public Application (ApplicationRequest applicationRequest){
         this.firstName = applicationRequest.getFirstName();
