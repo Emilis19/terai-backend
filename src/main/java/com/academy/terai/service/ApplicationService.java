@@ -2,19 +2,20 @@ package com.academy.terai.service;
 
 import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Application;
+import com.academy.terai.model.ApplicationStatus;
+import com.academy.terai.model.request.ApplicationRequest;
+import com.academy.terai.model.request.ApplicationUpdateRequest;
+import com.academy.terai.model.response.ApplicationFullResponse;
 import com.academy.terai.model.response.ApplicationHrResponse;
 import com.academy.terai.repository.ApplicationRepository;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -23,15 +24,11 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final JavaMailSender javaMailSender;
-    private final StatusService statusService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender, StatusService statusService) {
+    public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender) {
         this.applicationRepository = applicationRepository;
         this.javaMailSender = javaMailSender;
-        this.statusService = statusService;
     }
 
     public List<ApplicationHrResponse> findAll() {
@@ -45,21 +42,28 @@ public class ApplicationService {
     }
 
 
-    public Application findById(final String id) throws ApiRequestException {
-        return applicationRepository.findById(id).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + id));
+    public ApplicationFullResponse findById(final String id) throws ApiRequestException {
+        Application app = applicationRepository.findById(id).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + id));
+        ApplicationFullResponse appResponse = new ApplicationFullResponse(app);
+        return appResponse;
     }
 
     public Application findByEmail(final String email) {
-        return applicationRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Email: " + email + " not found"));
+        return applicationRepository.findByEmail(email);
     }
 
-    public void updateApplication(final Application application, final String id) throws ApiRequestException {
-        //change to orelsethrow
-        if (!applicationRepository.findById(id).isPresent()){
-            throw new ApiRequestException("Aplikacija neegzistuoja su id: " + id);
-    }
-
-        applicationRepository.save(application);
+    public void updateApplication(final ApplicationUpdateRequest application, final String id) throws ApiRequestException {
+        Application appToChange = applicationRepository.findById(id).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + id));
+        appToChange.changeApp(application);
+        appToChange.setStatus(ApplicationStatus.FORM_RECEIVED.toString());
+        appToChange.setDateCreated(new Date());
+        applicationRepository.save(appToChange);
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(appToChange.getEmail());
+        msg.setSubject("Akademija");
+        msg.setText("Sveiki " + appToChange.getFirstName() + "\n Forma galite perziureti: localhost:4200/" + appToChange.getId()
+                + "\n Jusu slaptazodis: " + appToChange.getPassword());
+        javaMailSender.send(msg);
     }
 
     public void deleteApplication(final String id) throws ApiRequestException {
@@ -68,28 +72,25 @@ public class ApplicationService {
         }
         applicationRepository.deleteById(id);
     }
-    public Application addApplication(final Application application) throws ApiRequestException {
-        if (applicationRepository.findByEmail(application.getEmail()).isPresent()){
+    public ApplicationFullResponse addApplication(final ApplicationRequest application) throws ApiRequestException {
+        if (applicationRepository.findByEmail(application.getEmail()) != null){
             throw new ApiRequestException("Toks email jau egzistuoja: " + application.getEmail());
         }
-        String password = UUID.randomUUID().toString();
-        application.setDateCreated(new Date());
-        application.setPassword(passwordEncoder.encode(password));
-        //TODO: change the naming convention to ENUM like
-        application.setStatus(statusService.findByName("IT akademija gavo formą"));
+        Application app = new Application(application);
+        app.setDateCreated(new Date());
+        app.setPassword(UUID.randomUUID());
+        app.setStatus(ApplicationStatus.FORM_RECEIVED.toString());
+        ApplicationFullResponse returnApplication = new ApplicationFullResponse(applicationRepository.save(app));
 
-        Application returnApplication = applicationRepository.save(application);
-
-        if (returnApplication != null){
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setTo(returnApplication.getEmail());
 
             msg.setSubject("Akademija");
             msg.setText("Sveiki " + returnApplication.getFirstName() + "\n Forma galite perziureti: localhost:4200/" + returnApplication.getId()
-                    + "\n Jusu slaptazodis: " + password);
+                    + "\n Jusu slaptazodis: " + returnApplication.getPassword());
 
             javaMailSender.send(msg);
-        }
+
 
         return returnApplication;
     }
