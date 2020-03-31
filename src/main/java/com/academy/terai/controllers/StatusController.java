@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -19,10 +20,9 @@ public class StatusController {
 
     @GetMapping
     public ResponseEntity<List<String>> getAllStatuses() {
-        List<String> statuses = new ArrayList();
-        for (ApplicationStatus stat : ApplicationStatus.values()){
-            statuses.add(stat.toString());
-        }
+        List<String> statuses = Stream.of(ApplicationStatus.values())
+                .map(ApplicationStatus::getName)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(statuses, HttpStatus.OK);
     }
 
