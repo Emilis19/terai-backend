@@ -1,4 +1,4 @@
-package com.academy.terai.security;
+package com.academy.terai.service;
 
 import com.academy.terai.model.Account;
 import com.academy.terai.model.Application;

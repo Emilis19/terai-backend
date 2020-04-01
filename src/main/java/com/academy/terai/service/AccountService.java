@@ -1,5 +1,6 @@
 package com.academy.terai.service;
 
+import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Account;
 import com.academy.terai.model.Application;
 import com.academy.terai.model.request.AccountRequest;
@@ -39,26 +40,26 @@ public class AccountService {
         return responseList;
     }
 
-    public Account findByEmail(final String email) throws UsernameNotFoundException {
+    public Account findByEmail(final String email) throws ApiRequestException {
         return  this.accountRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Email: " + email + " not found"));
+                .orElseThrow(() -> new ApiRequestException("Toks el. pastas sistemoje neegzistuoja"));
     }
 
     public List<Account> findAllByOrderByReviewedApplicationsDesc() {
         return accountRepository.findAllByOrderByReviewedApplicationsDesc();
     }
-    public void updateAccount(final Account account, final String id) throws NotFoundException {
+    public void updateAccount(final Account account, final String id) throws ApiRequestException {
         //change to orelsethrow
         if (!accountRepository.findById(id).isPresent()){
-            throw new NotFoundException(id);
+            throw new ApiRequestException("Akauntas neegzistuoja su id: " + id);
         }
 
         accountRepository.save(account);
     }
-    public Account addAccount(final AccountRequest account) throws KeyAlreadyExistsException, NotFoundException {
-//        if (accountRepository.findByEmail(account.getEmail()) != null){
-//            throw new KeyAlreadyExistsException(account.getEmail());
-//        }
+    public Account addAccount(final AccountRequest account) throws ApiRequestException {
+        if (accountRepository.findByEmail(account.getEmail()).isPresent()){
+            throw new ApiRequestException("Toks el. pastas sistemoje jau yra");
+        }
         Account acc = new Account(account);
         acc.setLastLoggedIn(new Date());
         //TODO: change the naming convention to ENUM like
@@ -67,7 +68,10 @@ public class AccountService {
         return accountRepository.save(acc);
     }
 
-    public void deleteAccount(final String id) {
+    public void deleteAccount(final String id) throws ApiRequestException{
+        if (!accountRepository.findById(id).isPresent()){
+            throw new ApiRequestException("Akauntas neegzistuoja su id: " + id);
+        }
         accountRepository.deleteById(id);
     }
 }
