@@ -4,6 +4,7 @@ import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Application;
 import com.academy.terai.model.request.ApplicationRequest;
 import com.academy.terai.model.request.ApplicationUpdateRequest;
+import com.academy.terai.model.request.StatusChangeReqeust;
 import com.academy.terai.model.response.ApplicationFullResponse;
 import com.academy.terai.model.response.ApplicationHrResponse;
 import com.academy.terai.service.ApplicationService;
@@ -65,6 +66,11 @@ public class ApplicationController {
     @DeleteMapping("/{id}")
     ResponseEntity<HttpStatus> deleteApplication(@PathVariable String id) throws ApiRequestException {
         applicationService.deleteApplication(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("/changestatus")
+    ResponseEntity<HttpStatus> updateStatus(@RequestBody StatusChangeReqeust reqeust) throws ApiRequestException {
+        applicationService.changeStatus(reqeust);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

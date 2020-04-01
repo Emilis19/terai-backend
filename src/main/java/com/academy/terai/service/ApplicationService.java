@@ -5,6 +5,7 @@ import com.academy.terai.model.Application;
 import com.academy.terai.model.ApplicationStatus;
 import com.academy.terai.model.request.ApplicationRequest;
 import com.academy.terai.model.request.ApplicationUpdateRequest;
+import com.academy.terai.model.request.StatusChangeReqeust;
 import com.academy.terai.model.response.ApplicationFullResponse;
 import com.academy.terai.model.response.ApplicationHrResponse;
 import com.academy.terai.repository.ApplicationRepository;
@@ -98,5 +99,11 @@ public class ApplicationService {
 
 
         return returnApplication;
+    }
+    public void changeStatus (final StatusChangeReqeust reqeust) throws ApiRequestException {
+        Application app = applicationRepository.findById(reqeust.getId()).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + reqeust.getId()));
+        // for now gonna leave as string, but if front changes tu ENUM, ill change to enum aswell
+        app.setStatus(reqeust.getStatus());
+        applicationRepository.save(app);
     }
 }
