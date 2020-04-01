@@ -5,9 +5,8 @@ import com.academy.terai.model.Application;
 import com.academy.terai.model.response.AuthenticationResponse;
 import com.academy.terai.repository.AccountRepository;
 import com.academy.terai.repository.ApplicationRepository;
-import com.academy.terai.security.AuthenticationRequest;
+import com.academy.terai.model.request.AuthenticationRequest;
 import com.academy.terai.security.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,14 +27,18 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    AccountRepository users;
-    @Autowired
-    ApplicationRepository applicants;
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AccountRepository users;
+    private final ApplicationRepository applicants;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, AccountRepository users, ApplicationRepository applicants) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.users = users;
+        this.applicants = applicants;
+    }
 
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {

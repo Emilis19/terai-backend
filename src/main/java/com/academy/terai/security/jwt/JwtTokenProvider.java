@@ -1,7 +1,6 @@
 package com.academy.terai.security.jwt;
 
-import com.academy.terai.model.CustomUserDetails;
-import com.academy.terai.security.CustomUserDetailsService;
+import com.academy.terai.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

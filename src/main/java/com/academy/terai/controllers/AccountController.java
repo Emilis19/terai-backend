@@ -1,5 +1,6 @@
 package com.academy.terai.controllers;
 
+import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Account;
 import com.academy.terai.model.request.AccountRequest;
 import com.academy.terai.model.response.AccountResponse;
@@ -38,7 +39,7 @@ public class AccountController {
     }
 
     @GetMapping(value = "/{email}")
-    public Account getAccountByEmail(@PathVariable("email") String email) throws NotFoundException {
+    public Account getAccountByEmail(@PathVariable("email") String email) throws ApiRequestException {
         return accountService.findByEmail(email);
     }
 
@@ -48,19 +49,19 @@ public class AccountController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createAccount(@RequestBody AccountRequest account) throws KeyAlreadyExistsException, NotFoundException {
+    ResponseEntity<HttpStatus> createAccount(@RequestBody AccountRequest account) throws ApiRequestException {
         accountService.addAccount(account);
         return new ResponseEntity<>(HttpStatus.valueOf(204));
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateAccount(@RequestBody Account account, @PathVariable String id) throws NotFoundException {
+    ResponseEntity<HttpStatus> updateAccount(@RequestBody Account account, @PathVariable String id) throws ApiRequestException {
         accountService.updateAccount(account, id);
         return new ResponseEntity<>(HttpStatus.valueOf(204));
     }
 
     @DeleteMapping(value = "/{email}")
-    public void deleteStudent(@PathVariable String email) throws NotFoundException {
+    public void deleteStudent(@PathVariable String email) throws ApiRequestException {
         accountService.deleteAccount(accountService.findByEmail(email).getId());
     }
 }
