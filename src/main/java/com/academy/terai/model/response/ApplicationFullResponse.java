@@ -19,6 +19,7 @@ public class ApplicationFullResponse {
     private String lastName;
     private String email;
     private boolean academyTime;
+    private String academyTimeReason;
     private boolean contractAgreement;
     private String contractReason;
     private String likedTechnologies;
@@ -39,6 +40,7 @@ public class ApplicationFullResponse {
         this.lastName = application.getLastName();
         this.email = application.getEmail();
         this.academyTime = application.isAcademyTime();
+        this.academyTimeReason = application.getAcademyTimeReason();
         this.contractAgreement = application.isContractAgreement();
         this.contractReason = application.getContractReason();
         this.likedTechnologies = application.getLikedTechnologies();

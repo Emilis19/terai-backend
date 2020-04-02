@@ -66,8 +66,9 @@ public class ApplicationService {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(appToChange.getEmail());
         msg.setSubject("Akademija");
-        msg.setText("Sveiki " + appToChange.getFirstName() + "\n Forma galite perziureti: localhost:4200/" + appToChange.getId()
-                + "\n Jusu slaptazodis: " + appToChange.getPassword());
+        msg.setText("Sveiki " + appToChange.getFirstName() + "\n Formą galite peržiūrėti prisijungę: https://terai-frontend-staging.herokuapp.com/login"
+                + "\n Jūsų slaptažodis: " + appToChange.getPassword());
+
         javaMailSender.send(msg);
     }
 
@@ -92,8 +93,8 @@ public class ApplicationService {
             msg.setTo(returnApplication.getEmail());
 
             msg.setSubject("Akademija");
-            msg.setText("Sveiki " + returnApplication.getFirstName() + "\n Forma galite perziureti: localhost:4200/" + returnApplication.getId()
-                    + "\n Jusu slaptazodis: " + password);
+            msg.setText("Sveiki " + returnApplication.getFirstName() + "\n Formą galite peržiūrėti prisijungę: https://terai-frontend-staging.herokuapp.com/login"
+                    + "\n Jūsų slaptažodis: " + password);
 
             javaMailSender.send(msg);
 

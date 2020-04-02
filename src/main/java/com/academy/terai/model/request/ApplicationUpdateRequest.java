@@ -25,6 +25,8 @@ public class ApplicationUpdateRequest {
     @NotNull(message = "Akademijos laikas negali būti tuščias")
     private boolean academyTime;
 
+    private String academyTimeReason;
+
     @NotNull(message = "Sutikimas negali būti tuščias")
     private boolean contractAgreement;
 

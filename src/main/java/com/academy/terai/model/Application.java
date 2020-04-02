@@ -34,6 +34,7 @@ public class Application {
     private String email;
 
     private boolean academyTime;
+    private String academyTimeReason;
     private boolean contractAgreement;
     private String contractReason;
     private String likedTechnologies;
@@ -55,6 +56,7 @@ public class Application {
         this.lastName = applicationRequest.getLastName();
         this.email = applicationRequest.getEmail();
         this.academyTime = applicationRequest.isAcademyTime();
+        this.academyTimeReason = applicationRequest.getAcademyTimeReason();
         this.contractAgreement = applicationRequest.isContractAgreement();
         this.contractReason = applicationRequest.getContractReason();
         this.likedTechnologies = applicationRequest.getLikedTechnologies();
@@ -72,6 +74,7 @@ public class Application {
         this.firstName = applicationRequest.getFirstName();
         this.lastName = applicationRequest.getLastName();
         this.academyTime = applicationRequest.isAcademyTime();
+        this.academyTimeReason = applicationRequest.getAcademyTimeReason();
         this.contractAgreement = applicationRequest.isContractAgreement();
         this.contractReason = applicationRequest.getContractReason();
         this.likedTechnologies = applicationRequest.getLikedTechnologies();
