@@ -1,13 +1,17 @@
 package com.academy.terai.service;
 
 import com.academy.terai.exceptions.ApiRequestException;
+import com.academy.terai.model.Account;
 import com.academy.terai.model.Application;
 import com.academy.terai.model.ApplicationStatus;
+import com.academy.terai.model.Comment;
 import com.academy.terai.model.request.ApplicationRequest;
 import com.academy.terai.model.request.ApplicationUpdateRequest;
+import com.academy.terai.model.request.CommentRequest;
 import com.academy.terai.model.request.StatusChangeReqeust;
 import com.academy.terai.model.response.ApplicationFullResponse;
 import com.academy.terai.model.response.ApplicationHrResponse;
+import com.academy.terai.repository.AccountRepository;
 import com.academy.terai.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,19 +25,25 @@ import java.util.UUID;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final JavaMailSender javaMailSender;
-
+    private final AccountService accountService;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final HttpServletRequest headerRequest;
     @Autowired
-    public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender, PasswordEncoder passwordEncoder) {
+    public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender, AccountService accountService, AccountRepository accountRepository, PasswordEncoder passwordEncoder, HttpServletRequest request) {
         this.applicationRepository = applicationRepository;
         this.javaMailSender = javaMailSender;
+        this.accountService = accountService;
+        this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
+        this.headerRequest = request;
     }
 
     public List<ApplicationHrResponse> findAll() {
@@ -49,8 +59,19 @@ public class ApplicationService {
 
     public ApplicationFullResponse findById(final String id) throws ApiRequestException {
         Application app = applicationRepository.findById(id).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + id));
-        ApplicationFullResponse appResponse = new ApplicationFullResponse(app);
-        return appResponse;
+        String role = headerRequest.getHeader("role");
+        System.out.println(role);
+        if(role.equals("admin") || role.equals("user")){
+            ApplicationFullResponse fullResponse = new ApplicationFullResponse(app);
+            fullResponse.setComments(app.getComment());
+            return fullResponse;
+        }else if (role.equals("application")){
+            ApplicationFullResponse fullResponse = new ApplicationFullResponse(app);
+            return fullResponse;
+        }
+        else{
+            throw new ApiRequestException("ID neegzistuoja");
+        }
     }
 
     public Application findByEmail(final String email) {
@@ -63,13 +84,6 @@ public class ApplicationService {
         appToChange.setStatus(ApplicationStatus.FORM_RECEIVED.getName());
         appToChange.setDateCreated(new Date());
         applicationRepository.save(appToChange);
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(appToChange.getEmail());
-        msg.setSubject("Akademija");
-        msg.setText("Sveiki " + appToChange.getFirstName() + "\n Formą galite peržiūrėti prisijungę: https://terai-frontend-staging.herokuapp.com/login"
-                + "\n Jūsų slaptažodis: " + appToChange.getPassword());
-
-        javaMailSender.send(msg);
     }
 
     public void deleteApplication(final String id) throws ApiRequestException {
@@ -83,6 +97,7 @@ public class ApplicationService {
             throw new ApiRequestException("Toks email jau egzistuoja: " + application.getEmail());
         }
         String password = UUID.randomUUID().toString();
+        System.out.println(password);
         Application app = new Application(application);
         app.setDateCreated(new Date());
         app.setPassword(passwordEncoder.encode(password));
@@ -106,5 +121,22 @@ public class ApplicationService {
         // for now gonna leave as string, but if front changes tu ENUM, ill change to enum aswell
         app.setStatus(reqeust.getStatus());
         applicationRepository.save(app);
+        String id = headerRequest.getHeader("id");
+        Account account = accountService.findById(id);
+        account.setReviewedApplications(account.getReviewedApplications() + 1);
+        System.out.println(account.getReviewedApplications());
+        accountRepository.save(account);
+    }
+    public void addComment (final CommentRequest request) throws ApiRequestException {
+        Application app = applicationRepository.findById(request.getAppId()).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + request.getAppId()));
+        Account account = accountRepository.findById(request.getHrId()).orElseThrow(() -> new ApiRequestException("Vartotojas neegzistuoja su id: " + request.getHrId()));
+        Comment comment = new Comment(request);
+        comment.setHrName(account.getName());
+        List<Comment> commentList = app.getComment();
+        commentList.add(comment);
+        app.setComment(commentList);
+        applicationRepository.save(app);
+        account.setReviewedApplications(account.getReviewedApplications() + 1);
+        accountRepository.save(account);
     }
 }

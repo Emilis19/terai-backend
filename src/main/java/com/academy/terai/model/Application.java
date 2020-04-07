@@ -17,12 +17,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "application")
+@Document(collection = "application_test")
 public class Application {
     @Id
     private String id;
@@ -50,6 +51,7 @@ public class Application {
     private String status;
 
     private String password;
+    private List<Comment> comment;
 
     public Application (ApplicationRequest applicationRequest){
         this.firstName = applicationRequest.getFirstName();
