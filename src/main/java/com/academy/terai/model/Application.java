@@ -23,7 +23,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "application_test")
+@Document(collection = "application")
 public class Application {
     @Id
     private String id;
