@@ -2,6 +2,7 @@ package com.academy.terai.controllers;
 
 import com.academy.terai.exceptions.ApiRequestException;
 import com.academy.terai.model.Application;
+import com.academy.terai.model.Comment;
 import com.academy.terai.model.request.ApplicationRequest;
 import com.academy.terai.model.request.ApplicationUpdateRequest;
 import com.academy.terai.model.request.CommentRequest;
@@ -72,5 +73,10 @@ public class ApplicationController {
     ResponseEntity<HttpStatus> addComment(@RequestBody CommentRequest request) throws ApiRequestException {
         applicationService.addComment(request);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("getcomments/{id}")
+    ResponseEntity<List<Comment>> getCommentsById(@PathVariable String id) throws ApiRequestException {
+        List<Comment> returnList = applicationService.getComments(id);
+        return new ResponseEntity<List<Comment>>(returnList, HttpStatus.OK);
     }
 }
