@@ -74,4 +74,9 @@ public class AccountService {
         }
         accountRepository.deleteById(id);
     }
+
+    public Account findById(final String id) throws ApiRequestException {
+        return  this.accountRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Toks id neegzistuoja"));
+    }
 }

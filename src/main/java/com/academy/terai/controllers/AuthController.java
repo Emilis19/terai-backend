@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -58,6 +59,7 @@ public class AuthController {
                 id = application.getId();
             } else {
                 account = this.users.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"));
+                account.setLastLoggedIn(new Date());
                 roles = account.getRoles();
                 if(roles.contains("ROLE_ADMIN")){
                     signeeRole = "admin";

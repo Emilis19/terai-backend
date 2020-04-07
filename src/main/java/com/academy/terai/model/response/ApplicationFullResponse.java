@@ -1,12 +1,14 @@
 package com.academy.terai.model.response;
 
 import com.academy.terai.model.Application;
+import com.academy.terai.model.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.Binary;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -33,6 +35,7 @@ public class ApplicationFullResponse {
     private String referenceToIt;
     private Date dateCreated;
     private String status;
+    private List<Comment> comments;
 
     public ApplicationFullResponse(Application application) {
         this.id = application.getId();
