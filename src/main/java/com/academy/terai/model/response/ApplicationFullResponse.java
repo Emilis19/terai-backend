@@ -35,7 +35,6 @@ public class ApplicationFullResponse {
     private String referenceToIt;
     private Date dateCreated;
     private String status;
-    private List<Comment> comments;
 
     public ApplicationFullResponse(Application application) {
         this.id = application.getId();

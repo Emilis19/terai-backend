@@ -16,6 +16,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -70,6 +71,7 @@ public class Application {
         this.image = applicationRequest.getImage();
         this.hobbies = applicationRequest.getHobbies();
         this.referenceToIt = applicationRequest.getReferenceToIt();
+        this.comment = new ArrayList();
     }
 
     public void changeApp (ApplicationUpdateRequest applicationRequest){

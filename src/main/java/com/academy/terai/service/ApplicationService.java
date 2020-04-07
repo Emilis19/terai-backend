@@ -35,15 +35,14 @@ public class ApplicationService {
     private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final HttpServletRequest headerRequest;
     @Autowired
-    public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender, AccountService accountService, AccountRepository accountRepository, PasswordEncoder passwordEncoder, HttpServletRequest request) {
+    public ApplicationService(ApplicationRepository applicationRepository, JavaMailSender javaMailSender, AccountService accountService, AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.applicationRepository = applicationRepository;
         this.javaMailSender = javaMailSender;
         this.accountService = accountService;
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
-        this.headerRequest = request;
+
     }
 
     public List<ApplicationHrResponse> findAll() {
@@ -59,19 +58,8 @@ public class ApplicationService {
 
     public ApplicationFullResponse findById(final String id) throws ApiRequestException {
         Application app = applicationRepository.findById(id).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + id));
-        String role = headerRequest.getHeader("role");
-        System.out.println(role);
-        if(role.equals("admin") || role.equals("user")){
-            ApplicationFullResponse fullResponse = new ApplicationFullResponse(app);
-            fullResponse.setComments(app.getComment());
-            return fullResponse;
-        }else if (role.equals("application")){
             ApplicationFullResponse fullResponse = new ApplicationFullResponse(app);
             return fullResponse;
-        }
-        else{
-            throw new ApiRequestException("ID neegzistuoja");
-        }
     }
 
     public Application findByEmail(final String email) {
@@ -121,11 +109,6 @@ public class ApplicationService {
         // for now gonna leave as string, but if front changes tu ENUM, ill change to enum aswell
         app.setStatus(reqeust.getStatus());
         applicationRepository.save(app);
-        String id = headerRequest.getHeader("id");
-        Account account = accountService.findById(id);
-        account.setReviewedApplications(account.getReviewedApplications() + 1);
-        System.out.println(account.getReviewedApplications());
-        accountRepository.save(account);
     }
     public void addComment (final CommentRequest request) throws ApiRequestException {
         Application app = applicationRepository.findById(request.getAppId()).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + request.getAppId()));
@@ -138,5 +121,12 @@ public class ApplicationService {
         applicationRepository.save(app);
         account.setReviewedApplications(account.getReviewedApplications() + 1);
         accountRepository.save(account);
+    }
+
+    public List<Comment> getComments(final String id){
+        Application app = applicationRepository.findById(id).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + id));
+        List<Comment> comments = new ArrayList();
+        comments = app.getComment();
+        return comments;
     }
 }
