@@ -44,7 +44,7 @@ public class ApplicationUpdateRequest {
     private String degree;
     private String mobileNumber;
     private String linkedinUrl;
-    private Binary image;
+    private String image;
     private String hobbies;
     private String referenceToIt;
 }
