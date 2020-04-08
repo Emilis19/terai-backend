@@ -30,7 +30,7 @@ public class ApplicationFullResponse {
     private String degree;
     private String mobileNumber;
     private String linkedinUrl;
-    private Binary image;
+    private String image;
     private String hobbies;
     private String referenceToIt;
     private Date dateCreated;
