@@ -25,13 +25,19 @@ import java.util.List;
 public class Account {
     @Id
     private String id;
+    @NotBlank(message = "Vardas negali būti tuščias")
+    @Size(max = 32, message = "Vardas negali būti ilgesnis nei 32 simboliai")
     private String name;
+    @NotBlank(message = "Pavardė negali būti tuščia")
+    @Size(max = 32, message = "Pavardė negali būti ilgesnė nei 32 simboliai")
     private String lastName;
     @Indexed(unique = true)
     @Email
+    @NotBlank(message = "El. paštas negali būti tuščias")
     private String email;
     private Integer reviewedApplications;
     private Date lastLoggedIn;
+    @NotBlank(message = "Slaptažodis negali būti tuščias")
     private String password;
     private List<String> roles = new ArrayList<>();
 

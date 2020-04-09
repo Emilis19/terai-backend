@@ -53,6 +53,7 @@ public class ApplicationRequest {
     private String degree;
     private String mobileNumber;
     private String linkedinUrl;
+    private String projectUrl;
     private String image;
     private String hobbies;
     private String referenceToIt;
