@@ -50,7 +50,7 @@ public class ApplicationService {
         List<ApplicationHrResponse> responseList = new ArrayList<>();
 
         for (Application app : applications) {
-            responseList.add(new ApplicationHrResponse(app.getId(), app.getFirstName(), app.getDateCreated(), app.getStatus()));
+            responseList.add(new ApplicationHrResponse(app.getId(), app.getFirstName(),app.getLastName(), app.getDateCreated(), app.getStatus()));
         }
         return responseList;
     }

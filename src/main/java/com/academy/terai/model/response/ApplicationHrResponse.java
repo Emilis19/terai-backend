@@ -12,6 +12,7 @@ import java.util.Date;
 public class ApplicationHrResponse {
     private String id;
     private String firstName;
+    private String lastName;
     private Date dateCreated;
     private String status;
 
