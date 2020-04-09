@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Data
@@ -19,8 +20,10 @@ public class Draft {
     @Id
     private String id;
     private String firstName;
+
     @Email
     @Indexed(unique = true)
+    @NotBlank(message = "Email negali būti tuščias")
     private String email;
     private Date dateCreated;
     private Boolean reminderSent;
