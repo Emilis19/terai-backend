@@ -27,9 +27,9 @@ public class DraftService {
         this.javaMailSender = javaMailSender;
         this.applicationService = applicationService;
     }
-    public void addDraft (final DraftRequest request) throws ApiRequestException {
+    public void addDraft (final DraftRequest request){
         if (applicationRepository.findByEmail(request.getEmail()).isPresent()||draftRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new ApiRequestException("Toks email jau egzistuoja: " + request.getEmail());
+            return;
         }
         Draft draft = new Draft(request);
         draft.setDateCreated(new Date());

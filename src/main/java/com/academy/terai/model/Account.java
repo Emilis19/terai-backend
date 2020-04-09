@@ -32,8 +32,11 @@ public class Account {
     @Size(max = 32, message = "Pavardė negali būti ilgesnė nei 32 simboliai")
     private String lastName;
     @Indexed(unique = true)
+    @Email
     @NotBlank(message = "El. paštas negali būti tuščias")
     private String email;
+    private Integer reviewedApplications;
+    private Date lastLoggedIn;
     @NotBlank(message = "Slaptažodis negali būti tuščias")
     private String password;
     private List<String> roles = new ArrayList<>();

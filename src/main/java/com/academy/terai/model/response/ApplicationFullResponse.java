@@ -30,6 +30,7 @@ public class ApplicationFullResponse {
     private String degree;
     private String mobileNumber;
     private String linkedinUrl;
+    private String projectUrl;
     private String image;
     private String hobbies;
     private String referenceToIt;
@@ -56,5 +57,6 @@ public class ApplicationFullResponse {
         this.referenceToIt = application.getReferenceToIt();
         this.dateCreated = application.getDateCreated();
         this.status = application.getStatus();
+        this.projectUrl = application.getProjectUrl();
     }
 }
