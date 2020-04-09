@@ -20,6 +20,7 @@ public class Draft {
     @Id
     private String id;
     private String firstName;
+
     @Email
     @Indexed(unique = true)
     @NotBlank(message = "Email negali būti tuščias")

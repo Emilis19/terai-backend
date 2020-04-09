@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 
@@ -15,6 +17,7 @@ import java.util.Date;
 public class Comment {
     private String hrId;
     private String hrName;
+    @NotBlank(message = "komentaras negali būti tuščias")
     private String comment;
     private Date dateCreated;
 

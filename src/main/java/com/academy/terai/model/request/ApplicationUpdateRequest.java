@@ -22,6 +22,9 @@ public class ApplicationUpdateRequest {
     @Size(max = 32, message = "Pavardė negali būti ilgesnė nei 32 simboliai")
     private String lastName;
 
+    @NotBlank(message = "Email negali būti tuščias")
+    private String email;
+
     @NotNull(message = "Akademijos laikas negali būti tuščias")
     private boolean academyTime;
 
