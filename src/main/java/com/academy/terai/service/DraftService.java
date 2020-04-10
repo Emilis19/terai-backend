@@ -38,7 +38,7 @@ public class DraftService {
     }
     @Scheduled(fixedRateString = "PT1S")
     public void sendReminder(){
-        Date markerDate = new Date(new Date().getTime()-60000);
+        Date markerDate = new Date(new Date().getTime());
         List<Draft> draftList = draftRepository.findAllByDateCreatedIsBeforeAndReminderSentFalse(markerDate);
         for( Draft draft: draftList){
             if(!applicationRepository.findByEmail(draft.getEmail()).isPresent()){
