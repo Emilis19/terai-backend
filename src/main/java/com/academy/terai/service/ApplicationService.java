@@ -109,6 +109,15 @@ public class ApplicationService {
         // for now gonna leave as string, but if front changes tu ENUM, ill change to enum aswell
         app.setStatus(reqeust.getStatus());
         applicationRepository.save(app);
+        if (reqeust.getStatus().equals("Priėmimas į akademiją patvirtintas")){
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setTo(app.getEmail());
+
+            msg.setSubject("Akademija");
+            msg.setText("Sveiki " + app.getFirstName() + "\n Sveikiname patekus i IT Akademija!"
+                    + "\n Tikimės, kad gerai praleisite laiką!");
+            javaMailSender.send(msg);
+        }
     }
     public void addComment (final CommentRequest request) throws ApiRequestException {
         Application app = applicationRepository.findById(request.getAppId()).orElseThrow(() -> new ApiRequestException("Aplikacija neegzistuoja su id: " + request.getAppId()));
